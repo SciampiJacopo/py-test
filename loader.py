@@ -11,11 +11,12 @@ def mainMenuScreen():
     global screen
 
     wmc.UI_ControllerClass.setBackgroundImage("/media/main_menu_bg.png")
-    wmc.UI_ControllerClass.drawText("Singleplayer", "button1Clicked",
+
+    wmc.UI_ControllerClass.drawText("Singleplayer", "main_menu_sp_clicked",
                                     CFG_MAIN_MENU_TEXT_START_GAME_SP_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_START_GAME_SP_POS_Y_PERCENT)
-    wmc.UI_ControllerClass.drawText("Multiplayer", "button1Clicked",
+    wmc.UI_ControllerClass.drawText("Multiplayer", "main_menu_mp_clicked",
                                     CFG_MAIN_MENU_TEXT_START_GAME_MP_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_START_GAME_MP_POS_Y_PERCENT)
-    wmc.UI_ControllerClass.drawText("Options", "button1Clicked",
+    wmc.UI_ControllerClass.drawText("Options", "main_menu_option_clicked",
                                     CFG_MAIN_MENU_TEXT_OPTIONS_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_OPTIONS_POS_Y_PERCENT)
 
     canLoop = True
@@ -26,6 +27,8 @@ def mainMenuScreen():
                 canLoop = False
             elif event.type == MOUSEMOTION:
                 wmc.checkMouseCollitions()
+            elif event.type == MOUSEBUTTONUP:
+                wmc.checkMouseClick()
 
         wmc.updateScreen()
 

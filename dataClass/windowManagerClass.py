@@ -40,6 +40,9 @@ class WindowManagerClass:
     def quitGame(self):
         pygame.quit()
 
+    def checkMouseClick(self):
+        self.UI_ControllerClass.checkMouseClick()
+
     def checkMouseCollitions(self):
         self.UI_ControllerClass.checkCollision()
 

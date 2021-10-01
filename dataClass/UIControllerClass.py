@@ -1,22 +1,10 @@
 import sys
 import pygame
 
-from pygame.sprite import *
-
+from dataClass.genericClass import *
 from dataClass.UI.UITextClass import UITextClass
 from dataClass.UI.UIImageClass import UIImageClass
-
-
-class Sprite_Mouse_Location(Sprite):
-    def __init__(self, x, y):
-        Sprite.__init__(self)
-        self.rect = pygame.Rect(x, y, 1, 1)
-
-
-class GenericUIObjectClass:
-    def __init__(self, object, realPosX, realPosY):
-        self.image = object
-        self.rect = object.get_rect(topleft=(realPosX, realPosY))
+from dataClass.mouseControllerClass import *
 
 
 class UIControllerClass:
@@ -27,6 +15,7 @@ class UIControllerClass:
 
     global _UI_textController
     global _UI_ImageController
+    global _MouseController
 
     def __init__(self, screen):
         self.UI_TEXT_LIST = []
@@ -39,6 +28,7 @@ class UIControllerClass:
 
         self._UI_textController = UITextClass(self._mainFont)
         self._UI_ImageController = UIImageClass()
+        self._MouseController = MouseControllerClass()
 
         info = pygame.display.Info()
         self.screenW, self.screenH = info.current_w, info.current_h
@@ -47,17 +37,21 @@ class UIControllerClass:
         pygame.display.update(self.UI_IMAGE_LIST)
         pygame.display.update(self.UI_TEXT_LIST)
 
+    def checkMouseClick(self):
+        if self.itemCollided:
+            self._MouseController.onMouseClicked(self.itemCollided)
+
     def checkCollision(self):
         x, y = pygame.mouse.get_pos()
-        mouse = Sprite_Mouse_Location(x, y)
+        mouse = GenericMouseLocation(x, y)
 
         index = 0
         searchFinished = False
-        itemCollided = False  # set Later as the item collided
+        self.itemCollided = False  # set Later as the item collided
 
         while not searchFinished:
             if pygame.sprite.collide_rect(self.UI_TEXT_LIST[index], mouse):
-                itemCollided = self.UI_TEXT_LIST[index]
+                self.itemCollided = self.UI_TEXT_LIST[index]
                 searchFinished = True
             else:
                 index += 1
@@ -65,12 +59,13 @@ class UIControllerClass:
                 if index > len(self.UI_TEXT_LIST) - 1:
                     searchFinished = True
 
-        if itemCollided:
-            print(itemCollided)
+        if not self.itemCollided:
+            self.itemCollided = False
 
     def setBackgroundImage(self, imagePath):
         imageObject = self._UI_ImageController.createBackgroundImage(imagePath)
-        self.UI_IMAGE_LIST.append(GenericUIObjectClass(imageObject, 0, 0))
+        self.UI_IMAGE_LIST.append(
+            GenericUIObjectClass(imageObject, 0, 0, False))
 
         self._screen.blit(
             self.UI_IMAGE_LIST[len(self.UI_IMAGE_LIST) - 1].image, (0, 0))
@@ -80,6 +75,7 @@ class UIControllerClass:
         posX, posY = self._UI_textController.getTextRealPosition(
             textObject, offsetX, offsetY)
 
-        self.UI_TEXT_LIST.append(GenericUIObjectClass(textObject, posX, posY))
+        self.UI_TEXT_LIST.append(GenericUIObjectClass(
+            textObject, posX, posY, action))
         self._screen.blit(
             self.UI_TEXT_LIST[len(self.UI_TEXT_LIST) - 1].image, (posX, posY))
