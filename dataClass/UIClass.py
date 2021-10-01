@@ -54,23 +54,22 @@ class UIClass:
             self._objectList) - 1].image, (posX, posY))
 
     def _restoreButtonThatAreOnOver(self):
-        for item in self._objectList:
+        a = -1
+        for idx, item in enumerate(self._objectList):
             if item.imagePath.endswith('-over.png'):
                 newPath = item.imagePath.replace('-over.png', '.png')
                 self.setButton(newPath, item.text, item.width, item.height,
-                               item.posX, item.posY, self._screen, True)
+                               item.posX, item.posY, self._screen, True, True)
 
-                item = ""
-                print("XD")
-        self._objectList = [x for x in self._objectList if x]
-        print(len(self._objectList))
+                a = idx
+        print(a)
 
     def _onButtonOver(self, item):
         newPath = item.imagePath.replace('.png', '-over.png')
 
         if not newPath.endswith('-over-over.png'):
             self.setButton(newPath, item.text, item.width, item.height,
-                           item.posX, item.posY, self._screen, True)
+                           item.posX, item.posY, self._screen, True, True)
             idx = [x.id for x in self._objectList].index(item.id)
             self._objectList.pop(idx)
 
@@ -81,18 +80,49 @@ class UIClass:
         hasCollided = False
 
         for item in self._objectList:
-            if pygame.sprite.collide_rect(item, mouse) and item.attachEvent and item.type == "text_button" and not self._hasCollidedBefore:
-                self._hasCollidedBefore = True
+            if pygame.sprite.collide_rect(item, mouse) and item.attachEvent and item.type == "text_button":
                 hasCollided = True
 
-                self._onButtonOver(item)
+                if not self._hasCollidedBefore:
+                    self._hasCollidedBefore = True
+                    self._onButtonOver(item)
 
-        if (hasCollided == False):
+        if not hasCollided and self._hasCollidedBefore:
+            self._hasCollidedBefore = False
+
+        if (hasCollided == False and self._hasCollidedBefore == False):
             self._hasCollidedBefore = False
             self._restoreButtonThatAreOnOver()
 
-    def setButton(self, imagePath, textString, width, height, posX, posY, screen, horizzontalCenter):
+    def setButton(self, imagePath, textString, width, height, posX, posY, screen, horizzontalCenter, restored):
         # Add Text translation here
+
+        if restored:
+            text = self._mainFont.render(textString, 1, (255, 255, 255))
+            text_rect = text.get_rect()
+
+            image = pygame.image.load(sys.path[0] + imagePath)
+            image = pygame.transform.smoothscale(image, (width, height))
+
+            self._objectList.append(UiBlock(image, len(
+                self._objectList), "image", False, posX, posY, width, height, imagePath, textString))
+
+            screen.blit(self._objectList[len(
+                self._objectList) - 1].image, (posX, posY))
+
+            posTextX = (self.screenWidth / 2) - (text_rect.width / 2)
+
+            posTextY = posY + \
+                ((height / 2) - (text_rect.height / 2)) - 25
+
+            self._objectList.append(UiBlock(text, len(
+                self._objectList), "text_button", True, posTextX, posTextY, width, height, imagePath, textString))
+
+            screen.blit(self._objectList[len(
+                self._objectList) - 1].image, (posTextX, posTextY))
+
+            exit
+
         text = self._mainFont.render(textString, 1, (255, 255, 255))
         text_rect = text.get_rect()
 
@@ -114,6 +144,6 @@ class UIClass:
             self._objectList) - 1].image, (posX, posY))
 
         self._objectList.append(
-            UiBlock(text, len(self._objectList), "text_button", True, posX, posY, width, height, imagePath, textString))
+            UiBlock(text, len(self._objectList), "text_button", True, posTextX, posTextY, width, height, imagePath, textString))
         screen.blit(self._objectList[len(
             self._objectList) - 1].image, (posTextX, posTextY))

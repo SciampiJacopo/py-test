@@ -2,14 +2,19 @@ import os
 import pygame
 
 from pygame.locals import *
+
 from dataClass.settingsClass import GameSettingsClass
-from dataClass.UIClass import UIClass
+
+# UI STUFF
+from dataClass.UI.UIImageClass import UIImageClass
+from dataClass.UIControllerClass import UIControllerClass
 
 
 class WindowManagerClass:
     _screen = {}
     _settings = {}
-    _UiClass = {}
+    _UIControllerClass = {}
+    _UIImageClass = {}
 
     def __init__(self):
         global _screen
@@ -33,25 +38,22 @@ class WindowManagerClass:
         _screen = pygame.display.set_mode(
             (_settings["CLIENT_WIDTH"], _settings["CLIENT_HEIGHT"]), CLIENT_SCREEN_MODE)
 
-        _UiClass = UIClass(_screen)
+        self._UIControllerClass = UIControllerClass(_screen)
+        self._UIImageClass = UIImageClass(_screen)
 
     ### functions ###
-    def getScreen(self):
-        return _screen
-
     def updateScreen(self):
-        pygame.display.update(_UiClass._objectList)
+        self._UIControllerClass.update()
 
     def quitGame(self):
         pygame.quit()
 
-    def checkMouseCollitions(self):
-        _UiClass.checkCollitions()
+    # def checkMouseCollitions(self):
+    #    _UiClass.checkCollitions()
 
-    def setButton(self, imagePath, text, w, h, posX, posY, horizzontalCenter):
-        _UiClass.setButton(imagePath, text, w, h, posX,
-                           posY, _screen, horizzontalCenter)
+    # def setButton(self, imagePath, text, w, h, posX, posY, horizzontalCenter, restored):
+    #    _UiClass.setButton(imagePath, text, w, h, posX,
+    #                       posY, _screen, horizzontalCenter, restored)
 
     def setBackgroundImage(self, imagePath):
-        _UiClass.setImage(
-            imagePath, _settings["CLIENT_WIDTH"], _settings["CLIENT_HEIGHT"], 0, 0, _screen)
+        self._UIImageClass.setBackgroundImage(imagePath)

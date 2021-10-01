@@ -10,9 +10,9 @@ wmc = {}
 def mainMenuScreen():
     global screen
 
-    wmc.setBackgroundImage("/media/main_menu_bg.jpg")
-    wmc.setButton("/media/GUI/mainMenu/section.png",
-                  "Lorem Ipsum", CFG_MAIN_MENU_BUTTON_WIDTH, CFG_MAIN_MENU_BUTTON_HEIGHT, 100, 100, True)
+    wmc.setBackgroundImage("/media/main_menu_bg.png")
+    # wmc.setButton("/media/GUI/mainMenu/section.png",
+    #              "Lorem Ipsum", CFG_MAIN_MENU_BUTTON_WIDTH, CFG_MAIN_MENU_BUTTON_HEIGHT, 100, 100, True, False)
 
     canLoop = True
 
@@ -20,8 +20,8 @@ def mainMenuScreen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 canLoop = False
-            elif event.type == MOUSEMOTION:
-                wmc.checkMouseCollitions()
+           # elif event.type == MOUSEMOTION:
+                # wmc.checkMouseCollitions()
 
         wmc.updateScreen()
 
