@@ -12,6 +12,7 @@ class WindowManagerClass:
         global _screen
         global _settings
         global _UiClass
+        global FPS_CLOCK
 
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         _settings = GameSettingsClass().getSettings()
@@ -32,10 +33,13 @@ class WindowManagerClass:
 
         self.UI_ControllerClass = UIControllerClass(_screen)
 
+        self.FPS_CLOCK = pygame.time.Clock()
+
     ### functions ###
 
     def updateScreen(self):
         self.UI_ControllerClass.update()
+        self.FPS_CLOCK.tick(60)
 
     def quitGame(self):
         pygame.quit()

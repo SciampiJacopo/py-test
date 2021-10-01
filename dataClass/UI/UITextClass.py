@@ -14,8 +14,11 @@ class UITextClass:
         info = pygame.display.Info()
         self.screenW, self.screenH = info.current_w, info.current_h
 
-    def createTextObject(self, text):
-        return self._mainFont.render(text, 1, (255, 255, 255))
+    def createTextObject(self, text, color):
+        if color == "primary":
+            return self._mainFont.render(text, 1, (207, 216, 220))
+        elif color == "over":
+            return self._mainFont.render(text, 1, (255, 255, 255))
 
     def getTextRealPosition(self, text, offsetX, offsetY):
         text_rect = text.get_rect()
