@@ -1,0 +1,5 @@
+client_config.cfg
+
+CLIENT_WIDTH : number;
+CLIENT_HEIGHT : number;
+CLIENT_TYPE : string;  // "FULLSCREEN" | "NOFRAME"
