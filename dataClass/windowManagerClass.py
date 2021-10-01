@@ -4,18 +4,10 @@ import pygame
 from pygame.locals import *
 
 from dataClass.settingsClass import GameSettingsClass
-
-# UI STUFF
-from dataClass.UI.UIImageClass import UIImageClass
 from dataClass.UIControllerClass import UIControllerClass
 
 
 class WindowManagerClass:
-    _screen = {}
-    _settings = {}
-    _UIControllerClass = {}
-    _UIImageClass = {}
-
     def __init__(self):
         global _screen
         global _settings
@@ -38,12 +30,12 @@ class WindowManagerClass:
         _screen = pygame.display.set_mode(
             (_settings["CLIENT_WIDTH"], _settings["CLIENT_HEIGHT"]), CLIENT_SCREEN_MODE)
 
-        self._UIControllerClass = UIControllerClass(_screen)
-        self._UIImageClass = UIImageClass(_screen)
+        self.UI_ControllerClass = UIControllerClass(_screen)
 
     ### functions ###
+
     def updateScreen(self):
-        self._UIControllerClass.update()
+        self.UI_ControllerClass.update()
 
     def quitGame(self):
         pygame.quit()
@@ -54,6 +46,3 @@ class WindowManagerClass:
     # def setButton(self, imagePath, text, w, h, posX, posY, horizzontalCenter, restored):
     #    _UiClass.setButton(imagePath, text, w, h, posX,
     #                       posY, _screen, horizzontalCenter, restored)
-
-    def setBackgroundImage(self, imagePath):
-        self._UIImageClass.setBackgroundImage(imagePath)

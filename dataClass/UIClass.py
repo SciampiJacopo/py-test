@@ -54,15 +54,13 @@ class UIClass:
             self._objectList) - 1].image, (posX, posY))
 
     def _restoreButtonThatAreOnOver(self):
-        a = -1
         for idx, item in enumerate(self._objectList):
             if item.imagePath.endswith('-over.png'):
                 newPath = item.imagePath.replace('-over.png', '.png')
                 self.setButton(newPath, item.text, item.width, item.height,
                                item.posX, item.posY, self._screen, True, True)
 
-                a = idx
-        print(a)
+                self._objectList.pop(idx)
 
     def _onButtonOver(self, item):
         newPath = item.imagePath.replace('.png', '-over.png')
