@@ -40,8 +40,8 @@ class WindowManagerClass:
     def quitGame(self):
         pygame.quit()
 
-    # def checkMouseCollitions(self):
-    #    _UiClass.checkCollitions()
+    def checkMouseCollitions(self):
+        self.UI_ControllerClass.checkCollision()
 
     # def setButton(self, imagePath, text, w, h, posX, posY, horizzontalCenter, restored):
     #    _UiClass.setButton(imagePath, text, w, h, posX,

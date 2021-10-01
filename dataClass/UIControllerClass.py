@@ -1,15 +1,22 @@
 import sys
-from typing import Generic
 import pygame
+
+from pygame.sprite import *
 
 from dataClass.UI.UITextClass import UITextClass
 from dataClass.UI.UIImageClass import UIImageClass
 
 
+class Sprite_Mouse_Location(Sprite):
+    def __init__(self, x, y):
+        Sprite.__init__(self)
+        self.rect = pygame.Rect(x, y, 1, 1)
+
+
 class GenericUIObjectClass:
-    def __init__(self, object):
+    def __init__(self, object, realPosX, realPosY):
         self.image = object
-        self.rect = object.get_rect()
+        self.rect = object.get_rect(topleft=(realPosX, realPosY))
 
 
 class UIControllerClass:
@@ -40,17 +47,39 @@ class UIControllerClass:
         pygame.display.update(self.UI_IMAGE_LIST)
         pygame.display.update(self.UI_TEXT_LIST)
 
+    def checkCollision(self):
+        x, y = pygame.mouse.get_pos()
+        mouse = Sprite_Mouse_Location(x, y)
+
+        index = 0
+        searchFinished = False
+        itemCollided = False  # set Later as the item collided
+
+        while not searchFinished:
+            if pygame.sprite.collide_rect(self.UI_TEXT_LIST[index], mouse):
+                itemCollided = self.UI_TEXT_LIST[index]
+                searchFinished = True
+            else:
+                index += 1
+
+                if index > len(self.UI_TEXT_LIST) - 1:
+                    searchFinished = True
+
+        if itemCollided:
+            print(itemCollided)
+
     def setBackgroundImage(self, imagePath):
         imageObject = self._UI_ImageController.createBackgroundImage(imagePath)
-        self.UI_IMAGE_LIST.append(GenericUIObjectClass(imageObject))
+        self.UI_IMAGE_LIST.append(GenericUIObjectClass(imageObject, 0, 0))
 
         self._screen.blit(
             self.UI_IMAGE_LIST[len(self.UI_IMAGE_LIST) - 1].image, (0, 0))
 
     def drawText(self, text, action, offsetX, offsetY):
         textObject = self._UI_textController.createTextObject(text)
+        posX, posY = self._UI_textController.getTextRealPosition(
+            textObject, offsetX, offsetY)
 
-        self.UI_TEXT_LIST.append(GenericUIObjectClass(textObject))
+        self.UI_TEXT_LIST.append(GenericUIObjectClass(textObject, posX, posY))
         self._screen.blit(
-            self.UI_TEXT_LIST[len(self.UI_TEXT_LIST) - 1].image, (self._UI_textController.getTextRealPosition(
-                textObject, offsetX, offsetY)))
+            self.UI_TEXT_LIST[len(self.UI_TEXT_LIST) - 1].image, (posX, posY))

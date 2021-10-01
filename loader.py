@@ -11,10 +11,12 @@ def mainMenuScreen():
     global screen
 
     wmc.UI_ControllerClass.setBackgroundImage("/media/main_menu_bg.png")
-    wmc.UI_ControllerClass.drawText("Lorem Ipsum", "button1Clicked",
-                                    CFG_MAIN_MENU_TEXT_START_GAME_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_START_GAME_POS_Y_PERCENT)
-    # wmc.setButton("/media/GUI/mainMenu/section.png",
-    #              "Lorem Ipsum", CFG_MAIN_MENU_BUTTON_WIDTH, CFG_MAIN_MENU_BUTTON_HEIGHT, 100, 100, True, False)
+    wmc.UI_ControllerClass.drawText("Singleplayer", "button1Clicked",
+                                    CFG_MAIN_MENU_TEXT_START_GAME_SP_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_START_GAME_SP_POS_Y_PERCENT)
+    wmc.UI_ControllerClass.drawText("Multiplayer", "button1Clicked",
+                                    CFG_MAIN_MENU_TEXT_START_GAME_MP_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_START_GAME_MP_POS_Y_PERCENT)
+    wmc.UI_ControllerClass.drawText("Options", "button1Clicked",
+                                    CFG_MAIN_MENU_TEXT_OPTIONS_POS_X_PERCENT, CFG_MAIN_MENU_TEXT_OPTIONS_POS_Y_PERCENT)
 
     canLoop = True
 
@@ -22,8 +24,8 @@ def mainMenuScreen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 canLoop = False
-           # elif event.type == MOUSEMOTION:
-                # wmc.checkMouseCollitions()
+            elif event.type == MOUSEMOTION:
+                wmc.checkMouseCollitions()
 
         wmc.updateScreen()
 
@@ -34,7 +36,7 @@ def loadingScreen():
     global wmc
 
     wmc = WindowManagerClass()
-    wmc.UI_ControllerClass.setBackgroundImage("/media/first_loading.png")
+    # wmc.UI_ControllerClass.setBackgroundImage("/media/first_loading.png")
     wmc.updateScreen()
     mainMenuScreen()
 
